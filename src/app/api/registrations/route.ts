@@ -73,8 +73,6 @@ export async function GET(request: NextRequest) {
     const plan = searchParams.get('plan');
     const paidParam = searchParams.get('paid');
 
-    let query = db.select().from(registrations);
-
     const conditions = [];
 
     if (email) {
@@ -90,9 +88,10 @@ export async function GET(request: NextRequest) {
       conditions.push(eq(registrations.paid, paidValue));
     }
 
-    if (conditions.length > 0) {
-      query = query.where(and(...conditions));
-    }
+    const query =
+      conditions.length > 0
+        ? db.select().from(registrations).where(and(...conditions))
+        : db.select().from(registrations);
 
     const results = await query.orderBy(desc(registrations.createdAt));
     return NextResponse.json(results);

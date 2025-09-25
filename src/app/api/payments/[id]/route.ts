@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } } // ✅ Correct typing
+  { params }: { params: { id: any } } // ✅ Correct typing
 ) {
   try {
     const id = parseInt(params.id, 10);

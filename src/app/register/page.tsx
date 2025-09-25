@@ -176,13 +176,15 @@ useEffect(() => {
 
       // Redirect to payment page based on nationality
       const isIndian = formData.country === "india"
+      const data = {
+          ...formData
+        };
       if (isIndian) {
-        router.push("/payment/india")
+      router.push("/payment/india");
       } else {
-        const type = formData.registrationType || ""
-        const qs = type ? `?type=${encodeURIComponent(type)}` : ""
-        router.push(`/payment/international${qs}`)
+        router.push("/payment/international");
       }
+      sessionStorage.setItem("userData", JSON.stringify(data));
     }, 2000)
   }
 

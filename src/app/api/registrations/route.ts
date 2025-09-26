@@ -88,12 +88,13 @@ export async function GET(request: NextRequest) {
       conditions.push(eq(registrations.paid, paidValue));
     }
 
-    const query =
+    // FIX: Build the query in a single expression to avoid type issues
+    const filteredQuery =
       conditions.length > 0
         ? db.select().from(registrations).where(and(...conditions))
         : db.select().from(registrations);
 
-    const results = await query.orderBy(desc(registrations.createdAt));
+    const results = await filteredQuery.orderBy(desc(registrations.createdAt));
     return NextResponse.json(results);
   } catch (error) {
     console.error('GET registrations error:', error);
